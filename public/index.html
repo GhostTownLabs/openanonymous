@@ -53,7 +53,15 @@
     <button onclick="submitAdminCode()">Unlock</button>
   </div>
 
-  <div id="confessions"></div>
+  <h2>Submit Your Confession</h2>
+<form id="confessionForm">
+  <textarea id="confessionInput" placeholder="Write your confession here..." required></textarea><br>
+  <button type="submit">Confess</button>
+</form>
+
+<hr>
+
+<div id="confessions"></div>
 
   <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
