@@ -1,6 +1,18 @@
 const ADMIN_KEY = "kingghost";
 let adminMode = false;
-
+function showAdminLogin() {
+  document.getElementById("admin-login").style.display = "block";
+  function submitAdminCode() {
+  const code = document.getElementById("adminCodeInput").value;
+  if (code === "kingghost") {
+    adminMode = true;
+    alert("Admin mode activated");
+    document.getElementById("admin-login").style.display = "none";
+    renderAllConfessions(); // force reload with delete buttons
+  } else {
+    alert("Wrong code");
+  }
+}
 function activateAdmin() {
   const code = prompt("Enter admin code:");
   if (code === ADMIN_KEY) {
@@ -47,19 +59,4 @@ function renderAllConfessions() {
       renderConfession(doc);
     });
   });
-}
-function showAdminLogin() {
-  document.getElementById("admin-login").style.display = "block";
-}
-
-function submitAdminCode() {
-  const code = document.getElementById("adminCodeInput").value;
-  if (code === "kingghost") {
-    adminMode = true;
-    alert("Admin mode activated");
-    document.getElementById("admin-login").style.display = "none";
-    renderAllConfessions(); // force reload with delete buttons
-  } else {
-    alert("Wrong code");
-  }
 }
