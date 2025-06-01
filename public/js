@@ -1,0 +1,50 @@
+const ADMIN_KEY = "kingghost";
+let adminMode = false;
+
+function activateAdmin() {
+  const code = prompt("Enter admin code:");
+  if (code === ADMIN_KEY) {
+    adminMode = true;
+    alert("Admin mode activated");
+    renderAllConfessions();
+  } else {
+    alert("Wrong code");
+  }
+}
+
+function deleteConfession(id) {
+  firebase.firestore().collection("confessions").doc(id).delete()
+    .then(() => {
+      alert("Deleted successfully");
+      renderAllConfessions();
+    })
+    .catch((error) => {
+      console.error("Error deleting document: ", error);
+    });
+}
+
+function renderConfession(doc) {
+  const container = document.getElementById("confessions");
+  const div = document.createElement("div");
+  div.className = "confession";
+  div.innerHTML = `<p>${doc.data().text}</p>`;
+
+  if (adminMode) {
+    const delBtn = document.createElement("button");
+    delBtn.textContent = "🗑️";
+    delBtn.onclick = () => deleteConfession(doc.id);
+    div.appendChild(delBtn);
+  }
+
+  container.appendChild(div);
+}
+
+function renderAllConfessions() {
+  const container = document.getElementById("confessions");
+  container.innerHTML = "";
+  firebase.firestore().collection("confessions").get().then(snapshot => {
+    snapshot.forEach(doc => {
+      renderConfession(doc);
+    });
+  });
+}
