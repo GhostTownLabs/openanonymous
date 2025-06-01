@@ -18,20 +18,29 @@ function submitAdminCode() {
 }
 
 function deleteConfession(id) {
-  firebase.firestore().collection("confessions").doc(id).delete()
-    .then(() => {
-      alert("Deleted successfully");
-      renderAllConfessions();
-    })
-    .catch((error) => {
-      console.error("Error deleting document: ", error);
-    });
+  const confessionDiv = document.querySelector(`[data-id='${id}']`);
+  if (!confessionDiv) return;
+
+  confessionDiv.classList.add("fade-out");
+
+  setTimeout(() => {
+    firebase.firestore().collection("confessions").doc(id).delete()
+      .then(() => {
+        alert("Deleted successfully");
+        renderAllConfessions();
+      })
+      .catch((error) => {
+        console.error("Error deleting document: ", error);
+      });
+  }, 500); // delay matches fade-out animation
 }
 
 function renderConfession(doc) {
   const container = document.getElementById("confessions");
   const div = document.createElement("div");
   div.className = "confession";
+  div.setAttribute("data-id", doc.id); // required for animation
+
   div.innerHTML = `<p>${doc.data().text}</p>`;
 
   if (adminMode) {
@@ -40,6 +49,9 @@ function renderConfession(doc) {
     delBtn.onclick = () => deleteConfession(doc.id);
     div.appendChild(delBtn);
   }
+
+  container.appendChild(div);
+}
 
   container.appendChild(div);
 }
