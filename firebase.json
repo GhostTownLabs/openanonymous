@@ -1,6 +1,10 @@
-/openanonymous/
-├── firebase.json ✅
-├── .github/
-├── public/
-├── index.html
-├── ...
+{
+  "hosting": {
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
