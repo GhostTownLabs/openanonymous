@@ -68,3 +68,19 @@ function renderAllConfessions() {
 
 // Load confessions on page load
 window.onload = renderAllConfessions;
+document.getElementById("confessionForm").addEventListener("submit", function(e) {
+  e.preventDefault();
+  const text = document.getElementById("confessionInput").value.trim();
+  if (text) {
+    firebase.firestore().collection("confessions").add({ text })
+      .then(() => {
+        alert("Confession submitted anonymously.");
+        document.getElementById("confessionInput").value = "";
+        renderAllConfessions();
+      })
+      .catch((error) => {
+        console.error("Error adding confession: ", error);
+        alert("Something went wrong.");
+      });
+  }
+});
