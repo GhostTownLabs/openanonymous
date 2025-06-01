@@ -48,3 +48,18 @@ function renderAllConfessions() {
     });
   });
 }
+function showAdminLogin() {
+  document.getElementById("admin-login").style.display = "block";
+}
+
+function submitAdminCode() {
+  const code = document.getElementById("adminCodeInput").value;
+  if (code === "kingghost") {
+    adminMode = true;
+    alert("Admin mode activated");
+    document.getElementById("admin-login").style.display = "none";
+    renderAllConfessions(); // force reload with delete buttons
+  } else {
+    alert("Wrong code");
+  }
+}
