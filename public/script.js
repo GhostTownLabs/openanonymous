@@ -11,18 +11,7 @@ function submitAdminCode() {
     adminMode = true;
     alert("Admin mode activated");
     document.getElementById("admin-login").style.display = "none";
-    renderAllConfessions(); // force reload with delete buttons
-  } else {
-    alert("Wrong code");
-  }
-}
-
-function activateAdmin() {
-  const code = prompt("Enter admin code:");
-  if (code === ADMIN_KEY) {
-    adminMode = true;
-    alert("Admin mode activated");
-    renderAllConfessions();
+    renderAllConfessions(); // Refresh to show delete buttons
   } else {
     alert("Wrong code");
   }
@@ -47,7 +36,7 @@ function renderConfession(doc) {
 
   if (adminMode) {
     const delBtn = document.createElement("button");
-    delBtn.textContent = "🗑️";
+    delBtn.textContent = "🗑️ Delete";
     delBtn.onclick = () => deleteConfession(doc.id);
     div.appendChild(delBtn);
   }
@@ -64,4 +53,6 @@ function renderAllConfessions() {
     });
   });
 }
-renderAllConfessions();
+
+// Load confessions on page load
+window.onload = renderAllConfessions;
