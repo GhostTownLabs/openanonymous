@@ -4,74 +4,45 @@
   <meta charset="UTF-8">
   <title>OpenAnonymous</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  
   <style>
     body {
       font-family: Arial, sans-serif;
+      text-align: center;
       background: #111;
       color: #f0f0f0;
-      text-align: center;
       padding: 20px;
     }
-
+    .confession {
+      background: #222;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 10px auto;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 0 5px #333;
+    }
+    .fade-out {
+      opacity: 0;
+      transition: opacity 0.5s ease-out;
+    }
     button {
       margin-top: 10px;
-      padding: 10px 15px;
+      padding: 8px 12px;
       background: #444;
       color: white;
       border: none;
       border-radius: 5px;
       cursor: pointer;
     }
-
     button:hover {
       background: #666;
     }
-
-    #confessionForm {
-      margin-top: 20px;
-      margin-bottom: 20px;
-    }
-
-    #confessionInput {
-      width: 90%;
-      height: 100px;
-      padding: 10px;
-      font-size: 16px;
-      resize: vertical;
-      border: 1px solid #ccc;
-      border-radius: 5px;
-    }
-
-    .confession {
-      background: #222;
-      border-radius: 10px;
-      padding: 15px;
-      margin: 15px auto;
-      width: 90%;
-      max-width: 600px;
-      box-shadow: 0 0 5px #333;
-    }
-
-    .fade-out {
-      opacity: 0;
-      transition: opacity 0.5s ease-out;
-    }
-
-    select, input[type="text"] {
+    input[type="text"] {
       padding: 8px;
+      width: 70%;
       margin-top: 10px;
-      width: 90%;
-      max-width: 400px;
       border-radius: 5px;
       border: 1px solid #888;
-    }
-
-    .replies p {
-      font-size: 14px;
-      color: #aaa;
-      text-align: left;
-      margin: 5px 10px;
     }
   </style>
 </head>
@@ -79,37 +50,36 @@
 
   <h1>Welcome to OpenAnonymous</h1>
 
+  <!-- Theme Toggle -->
   <button onclick="toggleTheme()">🌓 Toggle Theme</button>
-  <button onclick="showAdminLogin()">👑 Admin Mode</button>
 
+  <!-- Admin Mode -->
+  <button onclick="showAdminLogin()">👑 Admin Mode</button>
   <div id="admin-login" style="display: none; margin-top: 10px;">
     <input type="password" id="adminCodeInput" placeholder="Enter admin code">
     <button onclick="submitAdminCode()">Unlock</button>
   </div>
 
+  <!-- Confession Form -->
   <h2>Submit Your Confession</h2>
-
   <form id="confessionForm">
-  <textarea id="confessionInput" placeholder="Write your confession..." required></textarea><br>
-  <select id="confessionCategory">
-    <option value="general">General</option>
-    <option value="love">Love</option>
-    <option value="life">Life</option>
-    <option value="work">Work</option>
-    <option value="friends">Friends</option>
-    <option value="family">Family</option>
-    <option value="school">School</option>
-    <option value="dark">Dark</option>
-    <option value="random">Random</option>
-  </select><br>
-  <button type="submit">Confess</button>
-</form>
+    <textarea id="confessionInput" placeholder="Write your confession..." required></textarea><br>
+    <select id="confessionCategory">
+      <option value="love">Love</option>
+      <option value="life">Life</option>
+      <option value="secrets">Secrets</option>
+      <option value="funny">Funny</option>
+      <option value="dark">Dark</option>
+    </select><br>
+    <button type="submit">Confess</button>
+  </form>
 
   <hr>
 
+  <!-- Confession Feed -->
   <div id="confessions"></div>
 
-  <!-- Firebase Core -->
+  <!-- Firebase -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
@@ -128,8 +98,7 @@
     const db = firebase.firestore();
   </script>
 
-  <!-- Main Logic -->
+  <!-- JS Logic -->
   <script src="js.js" defer></script>
-
 </body>
 </html>
