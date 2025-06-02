@@ -38,22 +38,7 @@ function deleteConfession(id) {
   }, 500);
 }
 
-// Render one confession with optional delete + reply
-function renderConfession(doc) {
-  const container = document.getElementById("confessions");
-  const div = document.createElement("div");
-  div.className = "confession";
-  div.setAttribute("data-id", doc.id);
-
-  // Confession text
-  div.innerHTML = `<p>${doc.data().text}</p>`;
-  if (!adminMode) {
-  const reportBtn = document.createElement("button");
-  reportBtn.textContent = "🚩 Report";
-  reportBtn.onclick = () => reportConfession(doc.id);
-  div.appendChild(reportBtn);
-}
-  
+// 🚩 Report confession
 function reportConfession(id) {
   firebase.firestore().collection("confessions").doc(id).update({
     reported: true
@@ -65,12 +50,28 @@ function reportConfession(id) {
   });
 }
 
-  // Replies
+// Render one confession
+function renderConfession(doc) {
+  const container = document.getElementById("confessions");
+  const div = document.createElement("div");
+  div.className = "confession";
+  div.setAttribute("data-id", doc.id);
+
+  div.innerHTML = `<p>${doc.data().text}</p>`;
+
+  // 🚩 Add report button for users
+  if (!adminMode) {
+    const reportBtn = document.createElement("button");
+    reportBtn.textContent = "🚩 Report";
+    reportBtn.onclick = () => reportConfession(doc.id);
+    div.appendChild(reportBtn);
+  }
+
+  // 🗨️ Replies
   const repliesContainer = document.createElement("div");
   repliesContainer.className = "replies";
   loadReplies(doc.id, repliesContainer);
 
-  // Reply input and button
   const replyInput = document.createElement("input");
   replyInput.type = "text";
   replyInput.placeholder = "Write a reply...";
@@ -94,12 +95,11 @@ function reportConfession(id) {
     }
   };
 
-  // Append everything
   div.appendChild(replyInput);
   div.appendChild(replyBtn);
   div.appendChild(repliesContainer);
 
-  // Admin delete button
+  // 🗑️ Delete for admin
   if (adminMode) {
     const delBtn = document.createElement("button");
     delBtn.textContent = "🗑️ Delete";
@@ -114,19 +114,20 @@ function reportConfession(id) {
 function renderAllConfessions() {
   const container = document.getElementById("confessions");
   container.innerHTML = "";
-  let query = db.collection("confessions");
-if (!adminMode) {
-  query = query.where("reported", "==", false);
-}
-query.get().then(snapshot => {
 
+  let query = db.collection("confessions");
+  if (!adminMode) {
+    query = query.where("reported", "==", false);
+  }
+
+  query.get().then(snapshot => {
     snapshot.forEach(doc => {
       renderConfession(doc);
     });
   });
 }
 
-// Load replies for a specific confession
+// Load replies for a confession
 function loadReplies(confessionId, container) {
   container.innerHTML = "";
   firebase.firestore()
@@ -146,12 +147,12 @@ function loadReplies(confessionId, container) {
     });
 }
 
-// Submit new confession
+// Handle new confession submission
 document.getElementById("confessionForm").addEventListener("submit", function (e) {
   e.preventDefault();
   const text = document.getElementById("confessionInput").value.trim();
   if (text) {
-    db.collection("confessions").add({ text })
+    db.collection("confessions").add({ text, reported: false })
       .then(() => {
         alert("Confession submitted anonymously.");
         document.getElementById("confessionInput").value = "";
@@ -163,6 +164,3 @@ document.getElementById("confessionForm").addEventListener("submit", function (e
       });
   }
 });
-
-// Load everything on page load
-window.onload = renderAllConfessions;
