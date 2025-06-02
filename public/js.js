@@ -47,6 +47,23 @@ function renderConfession(doc) {
 
   // Confession text
   div.innerHTML = `<p>${doc.data().text}</p>`;
+  if (!adminMode) {
+  const reportBtn = document.createElement("button");
+  reportBtn.textContent = "🚩 Report";
+  reportBtn.onclick = () => reportConfession(doc.id);
+  div.appendChild(reportBtn);
+}
+  
+function reportConfession(id) {
+  firebase.firestore().collection("confessions").doc(id).update({
+    reported: true
+  }).then(() => {
+    alert("Thank you. This confession has been reported.");
+  }).catch(error => {
+    console.error("Error reporting confession:", error);
+    alert("Something went wrong.");
+  });
+}
 
   // Replies
   const repliesContainer = document.createElement("div");
@@ -97,7 +114,12 @@ function renderConfession(doc) {
 function renderAllConfessions() {
   const container = document.getElementById("confessions");
   container.innerHTML = "";
-  db.collection("confessions").get().then(snapshot => {
+  let query = db.collection("confessions");
+if (!adminMode) {
+  query = query.where("reported", "==", false);
+}
+query.get().then(snapshot => {
+
     snapshot.forEach(doc => {
       renderConfession(doc);
     });
