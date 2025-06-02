@@ -11,6 +11,8 @@ const firebaseConfig = {
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
 const ADMIN_KEY = "kingghost";
 let adminMode = false;
 
@@ -37,7 +39,7 @@ function deleteConfession(id) {
   confessionDiv.classList.add("fade-out");
 
   setTimeout(() => {
-    firebase.firestore().collection("confessions").doc(id).delete()
+    db.collection("confessions").doc(id).delete()
       .then(() => {
         alert("Deleted successfully");
         renderAllConfessions();
@@ -63,14 +65,13 @@ function renderConfession(doc) {
     div.appendChild(delBtn);
   }
 
-
   container.appendChild(div);
 }
 
 function renderAllConfessions() {
   const container = document.getElementById("confessions");
   container.innerHTML = "";
-  firebase.firestore().collection("confessions").get().then(snapshot => {
+  db.collection("confessions").get().then(snapshot => {
     snapshot.forEach(doc => {
       renderConfession(doc);
     });
@@ -79,11 +80,12 @@ function renderAllConfessions() {
 
 // Load confessions on page load
 window.onload = renderAllConfessions;
+
 document.getElementById("confessionForm").addEventListener("submit", function(e) {
   e.preventDefault();
   const text = document.getElementById("confessionInput").value.trim();
   if (text) {
-    firebase.firestore().collection("confessions").add({ text })
+    db.collection("confessions").add({ text })
       .then(() => {
         alert("Confession submitted anonymously.");
         document.getElementById("confessionInput").value = "";
