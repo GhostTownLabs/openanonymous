@@ -1,6 +1,3 @@
-
-const db = firebase.firestore();
-
 const ADMIN_KEY = "kingghost";
 let adminMode = false;
 
