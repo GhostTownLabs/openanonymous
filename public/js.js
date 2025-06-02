@@ -1,16 +1,4 @@
-// Firebase config for Open Anonymous
-const firebaseConfig = {
-  apiKey: "AIzaSyCKNXqPvGpyCVLAUEYspohXU_yFnHqMBKg",
-  authDomain: "open-anonymous.firebaseapp.com",
-  projectId: "open-anonymous",
-  storageBucket: "open-anonymous.appspot.com",
-  messagingSenderId: "415868600474",
-  appId: "1:415868600474:web:13ac1dead401d92b879f23",
-  measurementId: "G-D32ZNKR5SF"
-};
 
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
 
 const ADMIN_KEY = "kingghost";
