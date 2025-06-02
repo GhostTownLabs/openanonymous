@@ -63,8 +63,6 @@ function renderConfession(doc) {
     div.appendChild(delBtn);
   }
 
-  container.appendChild(div);
-}
 
   container.appendChild(div);
 }
